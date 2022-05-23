@@ -1,0 +1,31 @@
+*{
+    margin:0;padding:0;box-sizing: border-box;
+}
+.game{
+    max-width: 670px;
+    height: 640px;
+    margin : 2rem auto;
+}
+
+.game span{
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border : 1px solid #eee;
+    margin-right: -4px;
+    margin-bottom: -4px;
+}
+.game span img{
+    position: absolute;
+    top:5px;
+    left: 5px;
+    width: 70px;
+    height: 70px;
+}
+.primary { background-color: #9d581a; /* background-color : #779556 ; */}
+.secondary{  /* background-color :#ebecd0; */ background-color: #e1a96a;}
+.active { background-color: #9BA3EB;}
+.green{    background-color: green;}
+
+
