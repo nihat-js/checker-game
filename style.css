@@ -22,10 +22,27 @@
     left: 5px;
     width: 70px;
     height: 70px;
+    cursor:pointer;
 }
 .primary { background-color: #9d581a; /* background-color : #779556 ; */}
 .secondary{  /* background-color :#ebecd0; */ background-color: #e1a96a;}
 .active { background-color: #9BA3EB;}
-.green{    background-color: green;}
+.green{    background-color: green; cursor:pointer}
 
 
+
+@media screen and (max-width:768px){
+    .game{
+        width: 100%;
+    }
+    .game span {
+        width: 50px;
+        height: 50px;
+    }
+    .game span img {
+        width: 50px;
+        height: 50px;
+        top : 0 ;
+        left : 0;
+    }
+}
