@@ -27,10 +27,11 @@ const startGame = () => {
             document.querySelector('.game').innerHTML += ` <span class="${color}  for-1-${i}-${j} for-2-${9-i}-${j}"   >  </span> `;
         }
     }
-    
-   //  document.querySelector('.game .for-1-4-4').append(Game.createStone(1,'b'))
    //  document.querySelector('.game .for-1-3-3').append(Game.createStone(1,'b'))
-   //  document.querySelector('.game .for-2-8-7').append(Game.createStone(2,'b'))
+   //  document.querySelector('.game .for-1-5-7').append(Game.createStone(1,'b'))
+   //  document.querySelector('.game .for-1-7-5').append(Game.createStone(1,'b'))
+   //  document.querySelector('.game .for-1-3-5').append(Game.createStone(1,'b'))
+   //  document.querySelector('.game .for-2-1-4').append(Game.createStone(2,'b'))
     
     for (let i=1;i<=3;i++){
         for( let j=1;j<=8;j++){
@@ -148,19 +149,27 @@ function stoneB(i=Game.selected_stone[0],j=Game.selected_stone[1]){
    stoneB_3(i,j);
    stoneB_4(i,j);
    
-
 }
 
 function stoneB_1(i,j,trash=[],){
+   let callAgain = false;
    while(j<8){
       i++;j++;
-         if ( checkSlotStatus(i,j) == 'empty'  ) {
+         if ( checkSlotStatus(i,j) == 'empty'   ) {
+            if (callAgain){
+               stoneB_(i,j,trash,1);
+            }
             makeItGreen(i,j,trash);
          }
          else if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i+1,j+1) == 'empty' ){
+            
             trash.push(i,j);
             stoneB_(i+1,j+1,trash,1);
+            callAgain = true;
+            
+            
          }else{
+
             break;
          }
       }
@@ -168,15 +177,20 @@ function stoneB_1(i,j,trash=[],){
 }
 
 function stoneB_2(i,j,trash=[]){
+   let callAgain = false;
    while(j>1){
       i++;j--;
-   
+         
          if ( checkSlotStatus(i,j) == 'empty'  ) {
+            if (callAgain){
+               stoneB_(i,j,trash,2);
+            }
             makeItGreen(i,j,trash);
          }
          else if (checkSlotStatus(i,j) == 'opponent' & checkSlotStatus(i+1,j-1) == 'empty' ){
             trash.push(i,j);
             stoneB_(i+1,j-1,trash,2);
+            callAgain = true;
          }else{
             break;
          }
@@ -186,15 +200,20 @@ function stoneB_2(i,j,trash=[]){
 }
 
 function stoneB_3(i,j,trash=[],){
+   let callAgain = false;
    while(j<8){
       i--;j++;
 
          if ( checkSlotStatus(i,j) == 'empty'  ) {
             makeItGreen(i,j,trash);
+            if(callAgain ){
+               stoneB_(i,j,trash,3);
+            }
          }
          else if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i-1,j+1) == 'empty' ){
             trash.push(i,j);
-            stoneB_(i-1,j+1,trash,3,true);
+            stoneB_(i-1,j+1,trash,3);
+            callAgain = true;
          }else{
             break;
          }
@@ -202,13 +221,17 @@ function stoneB_3(i,j,trash=[],){
    }
 }
 function stoneB_4(i,j,trash=[]){
+   let callAgain = false;
    while(j>1){
       i--;j--;
          if ( checkSlotStatus(i,j) == 'empty'  ) {
+            if (callAgain){
+               stoneB_(i,j,trash,4);
+            }
             makeItGreen(i,j,trash);
          }
          else if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i-1,j-1) == 'empty' ){
-   
+            callAgain = true;
             trash.push(i,j);
             stoneB_(i-1,j-1,trash,4);
          }else{
@@ -219,6 +242,7 @@ function stoneB_4(i,j,trash=[]){
 }
 
 function stoneB_(i,j,trash,skip){
+
    if (skip==1){
       stoneB__2(i,j,trash);stoneB__3(i,j,trash,);
    }else if (skip==2){
@@ -232,37 +256,62 @@ function stoneB_(i,j,trash,skip){
 
 
 function stoneB__1(i,j,trash){
+   let allowed = false;
    while(j<8){
       i++;j++;
+      if (checkSlotStatus(i,j) =='empty' & allowed == true ){
+         makeItGreen(i,j,trash);
+         stoneB_(i,j,trash);
+      }
       if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i+1,j+1) == 'empty' ){
             trash.push(i,j);
-            stoneB_1(i+1,j+1,trash,1);
-         
-            break;
+            stoneB_(i+1,j+1,trash,1);
+            allowed = true;
+      
       }
    }
+
    
 }
 
 function stoneB__2(i,j,trash){
-   while(j<8){
+   let allowed = false;
+   while(j>1){
       i++;j--;
+      console.log(allowed);
+      if (checkSlotStatus(i,j) == 'empty' & allowed === true ){
+         console.log('gel');
+         makeItGreen(i,j,trash);
+         stoneB_(i,j,trash);
+      }
+
+
       if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i+1,j-1) == 'empty' ){
-            trash.push(i,j);
-            stoneB_1(i+1,j-1,trash,1);
+         trash.push(i,j);
+         makeItGreen(i+1,j-1,trash);
+         allowed = true;
          
-            break;
       }
    }
+   
    
 }
 
 function stoneB__3(i,j,trash){
+   let allowed = false;
    while(j<8){
       i--;j++;
+
+      if (checkSlotStatus(i,j) =='empty' & allowed == true ){
+         makeItGreen(i,j,trash);
+         stoneB_(i,j,trash);
+      }
+
+
       if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i-1,j+1) == 'empty' ){
             trash.push(i,j);
-            stoneB_1(i-1,j+1,trash,1);
+            allowed = true;
+            stoneB_(i-1,j+1,trash,3);
          
             break;
       }
@@ -271,11 +320,20 @@ function stoneB__3(i,j,trash){
 }
 
 function stoneB__4(i,j,trash){
-   while(j<8){
+   let allowed = false;
+   while(j>1){
       i--;j--;
+
+      if (checkSlotStatus(i,j) =='empty' & allowed == true ){
+         makeItGreen(i,j,trash);
+         stoneB_(i,j,trash);
+      }
+
+
       if (checkSlotStatus(i,j) =='opponent' & checkSlotStatus(i-1,j-1) == 'empty' ){
             trash.push(i,j);
-            stoneB_1(i-1,j-1,trash,1);
+            allowed = true;
+            stoneB_(i-1,j-1,trash,3);
          
             break;
       }
@@ -320,7 +378,10 @@ function moveStone(x,y,trash = []) {
 
     if (trash.length>0) {
       for (let index = 0;index<trash.length;index+=2){ 
-         document.querySelector(`.for-${Game.turn}-${trash[index]}-${trash[index+1]}`).children[0].remove(); 
+        let son =  document.querySelector(`.for-${Game.turn}-${trash[index]}-${trash[index+1]}`) || false;
+        if (son !=false & typeof son !== undefined) {
+           son.children[0].remove();
+        }
       }
    }
 
